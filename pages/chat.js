@@ -13,12 +13,14 @@ export default function(){
     const [pvChatting, setPvChatting] = useState(false);
     const [pvDisplay, setpvDisplay] = useState("none");
     const [pmReciever, setpmReciever] = useState("");
+    const [pmRecieverimg, setpmRecieverimg] = useState("");
     const [pmList, setpmList] = useState([]);
     const [newMsgR, setnewMsgR] = useState(false);
     const [redirect, setRedirect] = useState(false);
     const Router = useRouter();
 
     useEffect(()=>{
+        
         soc.on('privateMessage', answer=>{
             setpmList([...pmList, answer]);
             setnewMsgR({newMsg: true, newMsgSender: answer.sender});
@@ -29,11 +31,12 @@ export default function(){
     });
 
 
-    const openPrivateChat = (event, reciever, display)=>{
+    const openPrivateChat = (event, reciever, display, img)=>{
         event.preventDefault();
         setPvChatting(true);
         setpvDisplay(display);
         setpmReciever(reciever);
+        setpmRecieverimg(img);
     }
 
     const addmessage = (obj)=>{
@@ -78,6 +81,7 @@ export default function(){
                     pvDisplay={pvDisplay} 
                     setpvDisplayNone={setpvDisplayNone} 
                     reciever={pmReciever} 
+                    recieverimg={pmRecieverimg}
                     pmList={pmList} 
                     addmessage={addmessage}
                     addmessages={addmessages}

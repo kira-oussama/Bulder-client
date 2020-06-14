@@ -7,7 +7,8 @@ export default class extends React.Component {
         super(props);
         this.state = {
             users: [],
-            me : ""
+            me : "",
+            avatar: ""
         }
     }
     
@@ -15,7 +16,7 @@ export default class extends React.Component {
         const user = JSON.parse(localStorage.getItem('userData'));
         this.setState({me: user.pseudoName});
         //emit the pseudoname to make an array socketId: username
-        soc.emit('username', user.pseudoName);
+        soc.emit('username', {pseudoName: user.pseudoName, avatar: user.avatar});
         //filter our names from an array
         soc.on('usersOnline', username=>{
             username = username.filter(function( obj ) {
@@ -25,9 +26,9 @@ export default class extends React.Component {
         });
     }
 
-    openPrivateChat = (event, reciever, display)=>{
+    openPrivateChat = (event, reciever, img)=>{
         event.preventDefault();
-        this.props.isChatting(event, reciever, "flex");
+        this.props.isChatting(event, reciever, "flex", img);
         this.props.setnewMsgRToFalse();  
     }
 
@@ -44,7 +45,7 @@ export default class extends React.Component {
                 <ul>
                     {this.state.users.map((user,index)=>{
                         return(
-                            <li key={index} onClick={(event)=>this.openPrivateChat(event, user.username)}> {user.username} {this.props.newMsgR.newMsgSender === user.username && this.props.newMsgR.newMsg ? <p id="newMessageCircle"></p> : ""} </li>
+                            <li key={index} onClick={(event)=>this.openPrivateChat(event, user.username, user.avatar)}> {user.username} {this.props.newMsgR.newMsgSender === user.username && this.props.newMsgR.newMsg ? <p id="newMessageCircle"></p> : ""} </li>
                         );
                     })}
                 </ul>

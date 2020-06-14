@@ -10,8 +10,10 @@ export default class extends React.Component {
             pseudoName: "",
             password: "",
             sexe: "male",
+            avatar : undefined,
             isLoading: false,
-            created: false
+            created: false,
+            errors: []
         }
     }
 
@@ -27,9 +29,9 @@ export default class extends React.Component {
         this.setState({sexe : event.target.value})
     }
 
-    // avatarChangeHandler = (event)=>{
-    //     this.setState({avatar: event.target.files[0]})
-    // }
+    avatarChangeHandler = (event)=>{
+        this.setState({avatar: event.target.files[0]})
+    }
 
     submitHandler = (event) =>{
         event.preventDefault();
@@ -38,19 +40,21 @@ export default class extends React.Component {
         info.append('pseudoName', this.state.pseudoName);
         info.append('password', this.state.password);
         info.append('sexe', this.state.sexe);
-        // if(this.state.avatar != ""){
-        //     info.append('avatarImg', this.state.avatar);
-        // }
+        info.append('avatarImg', this.state.avatar);
+        
         var headers = {
             headers:{
                 'Content-Type': 'multipart/form-data'
             }
         }
-        axios.post('https://bulderchat.herokuapp.com/user/register', info, headers)
+        axios.post('http://localhost:8000/user/register', info, headers)
         .then((response)=>{
             if(response.status === 201){
+                console.log(response)
                 this.setState({created: true})
                 this.props.redirectWhenCreated();
+            }else{
+                this.setState({errors: response.data.errors});
             }
             this.setState({isLoading: false})
         })
@@ -66,7 +70,7 @@ export default class extends React.Component {
                 <h1 className="text-primary loginSlogan">REGISTER</h1>
                 <form onSubmit={this.submitHandler}>
                     <div className="form-group col-sm-12">
-                    <input type="file" className="form-control-file" id="avatar" placeholder="Upload an avatar" />
+                    <input type="file" className="form-control-file" id="avatar" placeholder="Upload an avatar" onChange={this.avatarChangeHandler} />
                     </div>
 
                     <div className="form-group col-sm-12">
@@ -77,14 +81,21 @@ export default class extends React.Component {
                     </div>
                     <div className="form-group col-sm-12">
                     <select className="form-control" id="sexe" value={this.state.sexe} onChange={this.sexehandler}>
-                        <option>Male</option>
-                        <option>Female</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
                     </select>
                     </div>
-                    {/* <p>{this.state.created ? "your account is created you can login" : ""}</p> */}
                     <div className="form-group col-sm-12">
                         <button type="submit" className="btn btn-primary col-sm-6">Register<img style={ { width: "1rem" }} src={this.state.isLoading ? "/loginload.gif" : ""} alt={this.state.isLoading ? "loading..." : ""} /></button>
                     </div>
+                    {/* map the errors */}
+                    <ul>
+                        {
+                            this.state.errors.map((err, index)=>{
+                                return(<li key={index} className="text-danger">{err.msg}</li>);
+                            })
+                        }
+                    </ul>
                 </form>
 
                 <Link href="/">

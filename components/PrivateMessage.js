@@ -17,19 +17,18 @@ export default class PrivateMessage extends React.Component {
     async componentDidMount() {
         const me = await JSON.parse(localStorage.getItem("userData"));
         await this.setState({sender: me.pseudoName, avatar: me.avatar, receiver: this.props.reciever});
-        axios.post("https://bulderchat.herokuapp.com/user/messageseen",{sender: this.state.sender, receiver: this.state.receiver}, {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
+        axios.post("http://localhost:8000/user/messageseen",{sender: this.state.sender, receiver: this.state.receiver}, {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
         .then(response=> {
 
-            axios.post("https://bulderchat.herokuapp.com/user/loadmsg",{sender: this.state.sender, receiver: this.state.receiver}, {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
-            .then(response=> {
-                console.log(response)
-                this.props.addmessages(response.data);
+            axios.post("http://localhost:8000/user/loadmsg",{sender: this.state.sender, receiver: this.state.receiver}, {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
+            .then(resp=> {
+                console.log(resp.data)
+                // this.props.addmessages(resp.data);
                 document.querySelector(".privateChatBoxBody").scrollTop = document.querySelector(".privateChatBoxBody").scrollHeight;
             });
             
-        })
-        
-        .catch(err=>console.log(err))
+        }).catch(err=>console.log(err))
+
     }
 
 
@@ -80,7 +79,7 @@ export default class PrivateMessage extends React.Component {
             }
 
             //save to db
-            axios.post("https://bulderchat.herokuapp.com/user/message", postData, headers)
+            axios.post("http://localhost:8000/user/message", postData, headers)
             .then(response=>{
                 this.addMessageToList({
                     sender: response.data.sender,
@@ -135,7 +134,7 @@ export default class PrivateMessage extends React.Component {
                 </div>
 
                 <div className="bullespv">
-                    <img src={"https://bulderchat.herokuapp.com/"+this.state.avatar} className="bulle" onClick={this.showPrivateMessageBox} />
+                    <img src={"http://localhost:8000/"+this.props.recieverimg} className="bulle" onClick={this.showPrivateMessageBox} />
                 </div>
 
             </div>
