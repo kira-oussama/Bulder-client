@@ -49,8 +49,8 @@ export default class extends React.Component {
                         {
                             this.state.messages.map((msg,index)=>{
                                 
-                                const item = this.state.me === msg.sender ? <li key={index} className="iamSender"><span><img src={'http://localhost:8000/' + msg.avatar} />{ReactEmoji.emojify(msg.message)}</span><span className="personName">{msg.sender}</span></li> 
-                                                                          : <li key={index} className="otherSender"><span className="personName">{msg.sender}</span><span>{ReactEmoji.emojify(msg.message)} <img src={'http://localhost:8000/' + msg.avatar} /></span></li>;
+                                const item = this.state.me === msg.sender ? <li key={index} className="iamSender"><span><img src={'https://bulderchat.herokuapp.com/' + msg.avatar} />{ReactEmoji.emojify(msg.message)}</span><span className="personName">{msg.sender}</span></li> 
+                                                                          : <li key={index} className="otherSender"><span className="personName">{msg.sender}</span><span>{ReactEmoji.emojify(msg.message)} <img src={'https://bulderchat.herokuapp.com/' + msg.avatar} /></span></li>;
                                 return(item)
                             })
                         }

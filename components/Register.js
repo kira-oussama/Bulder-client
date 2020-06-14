@@ -47,7 +47,7 @@ export default class extends React.Component {
                 'Content-Type': 'multipart/form-data'
             }
         }
-        axios.post('http://localhost:8000/user/register', info, headers)
+        axios.post('https://bulderchat.herokuapp.com/user/register', info, headers)
         .then((response)=>{
             if(response.status === 201){
                 console.log(response)

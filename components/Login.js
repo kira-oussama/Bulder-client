@@ -38,7 +38,7 @@ export default class Login extends React.Component {
             }
         }
 
-        axios.post('http://localhost:8000/user/login', info, headers)
+        axios.post('https://bulderchat.herokuapp.com/user/login', info, headers)
         .then((response)=>{
             if(response.data.token){
                 localStorage.setItem('token', response.data.token);
