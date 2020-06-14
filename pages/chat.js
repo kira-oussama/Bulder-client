@@ -20,14 +20,13 @@ export default function(){
     const Router = useRouter();
 
     useEffect(()=>{
-        
+        if(localStorage.getItem('token')=== "undefined"){
+            Router.push('/')
+        }
         soc.on('privateMessage', answer=>{
             setpmList([...pmList, answer]);
             setnewMsgR({newMsg: true, newMsgSender: answer.sender});
         })
-        if(!localStorage.getItem('token')){
-            setRedirect(true);
-        }
     });
 
 
